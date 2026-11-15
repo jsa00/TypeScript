@@ -36,7 +36,23 @@
 
 ## 타입 검사 기준
 
-루트의 `tsconfig.json`에서 `strict: true`를 켜 두었습니다. tslab은 노트북 폴더의 `tsconfig.json`을 읽기 때문에, 셀에서 암시적 `any`나 `undefined` 가능성을 놓치면 실행할 때 컴파일 오류가 납니다.
+tslab은 `tsconfig.json`을 읽지 않고 자체 컴파일 옵션(strict 꺼짐)으로 셀을 검사합니다. 그래서 노트북에서는 **모든 변수·매개변수·반환값에 타입을 직접 명시**해 `any`가 끼어들 자리를 없애는 방식으로 타입 안정성을 확보합니다. 루트의 `tsconfig.json`(`strict: true`)은 코드가 따라야 할 기준을 적어 둔 파일입니다.
+
+## 트러블슈팅: D 드라이브 등 다른 드라이브에서 기본 타입 오류
+
+프로젝트 폴더와 tslab 설치 위치(전역 npm, 보통 C 드라이브)의 드라이브가 다르면 `'hi'.length`에서도 `Property 'length' does not exist on type 'string'`, `Cannot find name 'console'` 같은 오류가 납니다.
+
+- 원인: tslab의 `forwardTslabPath`(`dist/converter.js`)가 드라이브가 다를 때 `path.relative`가 돌려주는 절대 경로를 상대 경로로 취급해, TypeScript 기본 타입 파일(`lib.*.d.ts`)을 잘못된 위치에서 찾음
+- 해결: 전역 tslab의 `dist/converter.js`에서 아래처럼 조건 하나를 추가합니다. (tslab을 재설치하면 다시 적용해야 합니다)
+
+    ```js
+    // 변경 전
+    if (rel.startsWith("..")) {
+    // 변경 후
+    if (rel.startsWith("..") || path_1.default.isAbsolute(rel)) {
+    ```
+
+- 다른 방법: 프로젝트를 tslab과 같은 드라이브로 옮깁니다.
 
 ## 제출
 
