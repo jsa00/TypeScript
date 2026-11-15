@@ -11,28 +11,35 @@
 
 ## 실행 환경 설치
 
+사전 준비: [uv](https://docs.astral.sh/uv/), Node.js, VS Code
+
 1. VS Code에 **Jupyter** 확장(`ms-toolsai.jupyter`)을 설치합니다.
-2. Python과 Jupyter를 준비합니다.
+2. 프로젝트 가상환경(`.venv`)을 만들고 Jupyter를 설치합니다. `pyproject.toml`과 `uv.lock` 기준으로 Python 3.13과 Jupyter가 설치됩니다.
 
     ```bash
-    uv venv
-    uv pip install jupyter
+    uv sync
     ```
 
 3. tslab을 전역 설치하고 Jupyter 커널로 등록합니다.
 
     ```bash
     npm install -g tslab
-    tslab install --python=python
+    uv run tslab install --python=python
     ```
 
-4. 커널이 등록됐는지 확인합니다. 목록에 `tslab`, `jslab`이 보이면 됩니다.
+4. `.venv`의 Jupyter에서 커널이 보이는지 확인합니다. 목록에 `tslab`, `jslab`이 보이면 됩니다.
 
     ```bash
-    jupyter kernelspec list
+    uv run jupyter kernelspec list
     ```
 
-5. VS Code에서 `.ipynb`를 열고 오른쪽 위 **Select Kernel**에서 `TypeScript`(tslab)를 고릅니다.
+5. VS Code에서 `.ipynb`를 열고 오른쪽 위 **Select Kernel**에서 `TypeScript`(tslab)를 고릅니다. Python 환경을 묻는 경우 `.venv`(Python 3.13)를 선택합니다.
+
+명령줄에서 노트북 전체를 실행해 출력을 저장하려면 다음과 같이 실행합니다. (`--allow-errors`는 의도한 컴파일 에러 셀이 있어도 끝까지 실행하기 위한 옵션입니다)
+
+```bash
+uv run jupyter nbconvert --to notebook --execute --inplace --allow-errors --ExecutePreprocessor.kernel_name=tslab 01_data_modeling.ipynb
+```
 
 ## 타입 검사 기준
 
