@@ -1,0 +1,23 @@
+{
+  "name": "typescript-assignment",
+  "version": "1.0.0",
+  "description": "프론트엔드 심화(TypeScript) 과제: 전자상거래 도메인의 데이터 모델링, 타입 가드, 제네릭 저장소를 Jupyter Notebook(tslab 커널)으로 구현합니다.",
+  "scripts": {
+    "kernel:install": "node scripts/install-kernel.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsa00/TypeScript.git"
+  },
+  "keywords": [],
+  "author": "",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jsa00/TypeScript/issues"
+  },
+  "homepage": "https://github.com/jsa00/TypeScript#readme",
+  "devDependencies": {
+    "tslab": "^1.0.22"
+  },
+  "private": true
+}
